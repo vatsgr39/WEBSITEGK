@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "SOURCE TWIN AI | Explainable Sourcing Intelligence",
-  description: "Explainable supplier risk, should-cost and sourcing scenario digital twin for manufacturing.",
+  title: "Gautam Kumar | Strategic Sourcing Leader",
+  description: "Portfolio of Gautam Kumar, a strategic sourcing and commodity management professional creating measurable value across rail, automotive, and manufacturing.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -28,11 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

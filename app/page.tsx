@@ -1,28 +1,99 @@
-"use client";
-import {useState} from "react";
-
-const nav=["Control Tower","Suppliers","Components","Commodities","RFQs","Should Cost","Risk Intelligence","Digital Twin","Negotiation","Reports","AI Copilot","Administration"];
-const stats=[["Addressable spend","$48.2M","↗ 6.4% vs plan"],["Annualized savings","$3.74M","↗ 77% of target"],["Active RFQs","18","6 due this week"],["High-risk suppliers","7","! 2 require action"],["Single-source exposure","$8.6M","! 17.8% of spend"],["Average OTIF","94.2%","↗ 1.8 pts"],["Defect PPM","612","↘ 84 this quarter"],["Should-cost gap","8.7%","$2.1M opportunity"]];
-const vendors=[
- ["Apex Forge Systems","SUP-1001 · Mexico","$42.80","72","68 · High","$51.42","76","NOT RECOMMENDED"],
- ["Northstar Fabrication","SUP-1014 · United States","$45.60","91","22 · Low","$47.18","91","PRIMARY · 70%"],
- ["Great Lakes Precision","SUP-1022 · Canada","$47.10","86","31 · Moderate","$48.26","84","SECONDARY · 30%"]
+const highlights = [
+  ["$3.55M", "Savings delivered"],
+  ["8+", "Years of experience"],
+  ["800+", "NPI components sourced"],
+  ["90%+", "Supplier OTIF achieved"],
 ];
-export default function Home(){
- const[active,setActive]=useState("Control Tower"),[copilot,setCopilot]=useState(false),[light,setLight]=useState(false);
- return <main className={light?"light":""}>
-  <aside><div className="brand"><b>ST</b><div>SOURCE TWIN<small>AI</small></div></div><nav>{nav.map((n,i)=><button className={n===active?"active":""} onClick={()=>setActive(n)} key={n}><i>{["⌂","◇","▣","⬡","◫","∑","△","◎","◈","▤","✦","⚙"][i]}</i>{n}{n==="Risk Intelligence"&&<em>7</em>}</button>)}</nav><div className="user"><span>EM</span><div><b>Elena Morris</b><small>Sourcing Manager</small></div></div></aside>
-  <section className="shell"><header><div className="search">⌕ <input placeholder="Search suppliers, RFQs, components…"/><kbd>⌘ K</kbd></div><button onClick={()=>setLight(!light)}>{light?"☾":"☼"}</button><button>♢<sup>3</sup></button><button className="ask" onClick={()=>setCopilot(true)}>✦ Ask Copilot</button></header>
-   <div className="content"><div className="heading"><div><small>CONTROL TOWER　/　ENTERPRISE OVERVIEW</small><h1>Good morning, Elena.</h1><p>Here’s what needs your attention across the supply base.</p></div><div><button>⚙ Filters <b>3</b></button><select><option>Last 12 months</option><option>Year to date</option></select><button>⇩ Export</button></div></div>
-    <div className="alert"><b>!</b><div><strong>2 critical supply-continuity alerts</strong><p>A four-week disruption at Apex Forge Systems puts $3.2M of program revenue at risk.</p></div><button>Review alerts →</button></div>
-    <div className="stats">{stats.map((s,i)=><article key={s[0]}><small>{s[0]}</small><strong>{s[1]}</strong><p className={i===3||i===4?"warn":"good"}>{s[2]}</p><svg viewBox="0 0 90 25"><polyline points={i%2?"0,19 15,16 30,17 45,11 60,13 75,5 90,3":"0,20 15,18 30,19 45,12 60,14 75,7 90,5"}/></svg></article>)}</div>
-    <div className="split"><section className="panel"><div className="panelhead"><div><h2>Spend by commodity</h2><p>$48.2M total addressable spend</p></div>•••</div><div className="bars">{[["Structural fabrication","$12.4M",100],["CNC machining","$9.8M",79],["Stamping","$7.2M",58],["Injection molding","$6.4M",52],["Die casting","$5.1M",41],["Other","$7.3M",59]].map((x,i)=><div key={x[0]}><span>{x[0]}</span><i><b style={{width:x[2]+"%",background:["#5686ff","#35c7a5","#9473f5","#e9aa52","#e67280","#59667d"][i]}}/></i><strong>{x[1]}</strong></div>)}</div></section>
-     <section className="panel"><div className="panelhead"><div><h2>Supplier risk distribution</h2><p>30 active suppliers · weighted risk model v2.4</p></div><a>View model →</a></div><div className="risk"><div className="donut"><span><b>38</b><small>AVG RISK</small></span></div><div>{[["Low",14,"green"],["Moderate",9,"yellow"],["High",5,"orange"],["Critical",2,"red"]].map(x=><p key={x[0]}><i className={String(x[2])}/>{x[0]}<b>{x[1]}</b></p>)}</div></div><div className="note">ⓘ Missing data lowers confidence—not risk.</div></section></div>
-    <section className="panel award"><div className="panelhead"><div><h2>RFQ-2026-001 · Award recommendation</h2><p>Welded structural assembly · Eastern Ridge EV program</p></div><span>AWAITING APPROVAL</span></div><div className="recommend"><b>★</b><div><small>RECOMMENDED AWARD</small><strong>Northstar Fabrication <em>Primary · 70%</em></strong><p>Best risk-adjusted value despite a 6.5% price premium.</p></div><button onClick={()=>setCopilot(true)}>View explanation →</button></div><div className="table"><table><thead><tr><th>SUPPLIER</th><th>QUOTE</th><th>SHOULD COST</th><th>QCD</th><th>RISK</th><th>RISK-ADJ. COST</th><th>SCORE</th><th>RECOMMENDATION</th></tr></thead><tbody>{vendors.map((v,i)=><tr className={i===1?"selected":""} key={v[0]}>{v.map((x,j)=><td key={j}>{j===0?<><strong>{x}</strong><small>{v[1]}</small></>:j===1?null:j===4?<span className={`badge b${i}`}>{x}</span>:j===7?<span className={`decision d${i}`}>{x}</span>:x}</td>)}</tr>)}</tbody></table></div><div className="formula">Formula: 30% landed cost + 15% quality + 15% delivery + 10% capacity + 10% technical + 10% risk + 5% lead time + 5% terms <a>Show full calculation</a></div></section>
-    <section className="panel actions"><div className="panelhead"><div><h2>Prioritized sourcing actions</h2><p>Ranked by risk reduction and financial impact</p></div><a>View all actions →</a></div>{[["01","Approve dual-source award","RFQ-2026-001 · Welded structural assembly","$1.42M"],["02","Renegotiate material index","Apex Forge Systems · 14 components","$486K"],["03","Localize single-source bracket","CMP-044 · Eastern Ridge EV","$218K"]].map((a,i)=><div className="action" key={a[0]}><span>{a[0]}</span><div><strong>{a[1]}</strong><p>{a[2]}</p></div><div><small>EST. IMPACT</small><b>{a[3]}</b></div><em>{i<2?"HIGH":"MEDIUM"}</em><button>→</button></div>)}</section>
-    <footer>Data refreshed 4 minutes ago <span>Model governance: v2.4 · Validated 12 Jun 2026 · <u>View methodology</u></span></footer>
-   </div>
-  </section>
-  {copilot&&<div className="overlay" onClick={()=>setCopilot(false)}><section className="copilot" onClick={e=>e.stopPropagation()}><header><b>✦</b><div><strong>Source Twin Copilot</strong><small>Deterministic mode · Internal data only</small></div><button onClick={()=>setCopilot(false)}>×</button></header><article><small>AWARD EXPLANATION</small><h2>Why Northstar is the recommended primary source</h2><p>Northstar’s quote is 6.5% above Apex, but stronger delivery reliability, available capacity, and lower disruption exposure produce the best risk-adjusted outcome.</p><ul><li><b>$4.24 lower</b> risk-adjusted unit cost than Apex</li><li><b>96.8% OTIF</b> versus Apex at 82.4%</li><li><b>22/100 risk</b> with high input completeness</li></ul><div className="cite">Sources: <u>Supplier SUP-1014</u> · <u>RFQ RFQ-2026-001</u> · <u>Component CMP-001</u></div><div className="confidence">CONFIDENCE <b>High · 91%</b><i><em/></i></div></article><div className="chips"><button>Explain the cost variance</button><button>Simulate a disruption</button></div><form><input placeholder="Ask about suppliers, cost, risk, or scenarios…"/><button>↑</button></form><small className="legal">Responses cite internal records. Verify material decisions with the record owner.</small></section></div>}
- </main>
+
+const roles = [
+  {
+    date: "2023 - Present",
+    company: "Alstom Transport · North America",
+    title: "Buyer, NAM Region",
+    copy: "Leading strategic sourcing for mechanical and structural commodities across North American rail programs—from RFQ and should-cost analysis to supplier selection, LTAs, risk mitigation, and executive reviews.",
+    result: "$3.552M cost savings & avoidance",
+  },
+  {
+    date: "2022",
+    company: "Tesla · Fremont, California",
+    title: "Global Supply Management Intern",
+    copy: "Managed RFQs for manufacturing CAPEX and mechanical commodities, supporting supplier onboarding, bid evaluation, negotiations, NPI feasibility, and global supply continuity.",
+    result: "High-impact CAPEX sourcing",
+  },
+  {
+    date: "2019 - 2021",
+    company: "Alstom Transport · India",
+    title: "Supplier Coordinator",
+    copy: "Led supplier development, localization, planning, and forecasting for manufacturing programs, partnering cross-functionally to unlock stronger delivery performance.",
+    result: "4-week lead-time reduction",
+  },
+  {
+    date: "2017 - 2019",
+    company: "S.M. Auto & Autocomp · India",
+    title: "Purchase Engineer / Executive",
+    copy: "Built the foundation of a sourcing career through localization, JIT delivery, supplier development, inventory optimization, and production continuity.",
+    result: "30% inventory cost reduction",
+  },
+];
+
+const capabilities = [
+  ["01", "Strategic Sourcing", "Commodity strategy, RFQ/RFP execution, global procurement, supplier selection, and long-term agreements."],
+  ["02", "Cost & Commercial", "Should-cost modeling, bid analysis, contract negotiation, localization, and cost optimization."],
+  ["03", "Supplier Performance", "Capability assessment, QCD improvement, Tier-1 relationships, risk mitigation, and supply continuity."],
+  ["04", "Manufacturing Fluency", "Sheet metal, fabrication, stamping, welding, CNC machining, casting, molding, and surface finishing."],
+];
+
+export default function Home() {
+  return (
+    <main>
+      <nav className="nav wrap" aria-label="Primary navigation">
+        <a className="mark" href="#top" aria-label="Gautam Kumar home">GK<span>.</span></a>
+        <div className="navlinks">
+          <a href="#about">About</a><a href="#experience">Experience</a><a href="#expertise">Expertise</a>
+        </div>
+        <a className="navCta" href="mailto:vatsgr39@gmail.com">Let&apos;s connect <span>↗</span></a>
+      </nav>
+
+      <section className="hero wrap" id="top">
+        <div className="heroCopy">
+          <p className="eyebrow"><i /> Strategic sourcing & commodity management</p>
+          <h1>Building resilient supply chains.<br/><em>Creating measurable value.</em></h1>
+          <p className="intro">I&apos;m Gautam Kumar—a sourcing leader turning complex manufacturing challenges into stronger supplier partnerships, smarter commercial decisions, and lasting business impact.</p>
+          <div className="heroActions">
+            <a className="primary" href="#experience">Explore my work <span>↓</span></a>
+            <a className="textLink" href="/Gautam-Kumar-Resume.pdf" target="_blank">View résumé <span>↗</span></a>
+          </div>
+        </div>
+        <div className="portraitWrap">
+          <div className="portrait"><img src="/gautam-kumar.jpeg" alt="Gautam Kumar in a grey suit" /></div>
+          <div className="location"><span>Based in</span><b>United States</b></div>
+          <div className="availability"><i /> Open to strategic opportunities</div>
+        </div>
+        <div className="scroll">SCROLL TO DISCOVER <span>↓</span></div>
+      </section>
+
+      <section className="metrics"><div className="wrap metricGrid">{highlights.map(([value,label])=><div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div></section>
+
+      <section className="about wrap section" id="about">
+        <div><p className="sectionLabel">01 / Profile</p><h2>Where engineering rigor meets commercial strategy.</h2></div>
+        <div className="aboutCopy"><p>Across rail, automotive, and advanced manufacturing, I&apos;ve built a career around one idea: the best sourcing decisions create value far beyond price.</p><p>My approach combines manufacturing fluency, data-led cost analysis, and trusted supplier relationships to improve quality, delivery, resilience, and total cost—at scale.</p><div className="degree"><span>Currently pursuing</span><b>Doctor of Business Administration</b><small>Business Administration & Quantitative Methods · Belhaven University</small></div></div>
+      </section>
+
+      <section className="experience section" id="experience">
+        <div className="wrap"><p className="sectionLabel light">02 / Experience</p><div className="expHead"><h2>A track record of<br/><em>progress and impact.</em></h2><p>From the shop floor to global sourcing programs, each chapter has strengthened how I create value.</p></div>
+          <div className="timeline">{roles.map((role,index)=><article key={role.company}><div className="index">0{index+1}</div><div className="date">{role.date}</div><div className="role"><small>{role.company}</small><h3>{role.title}</h3><p>{role.copy}</p><b>{role.result} <span>↗</span></b></div></article>)}</div>
+        </div>
+      </section>
+
+      <section className="expertise wrap section" id="expertise">
+        <p className="sectionLabel">03 / Expertise</p><div className="expertHead"><h2>Capabilities built for<br/><em>complexity.</em></h2><p>A practical blend of technical depth, commercial judgment, and cross-functional leadership.</p></div>
+        <div className="capGrid">{capabilities.map(([n,title,copy])=><article key={n}><span>{n}</span><h3>{title}</h3><p>{copy}</p><b>↗</b></article>)}</div>
+        <div className="tools"><span>TOOLS & METHODS</span><div>{["SAP MM","Ariba","Power BI","Advanced Excel","SQL","Tableau","Lean","Six Sigma"].map(x=><b key={x}>{x}</b>)}</div></div>
+      </section>
+
+      <section className="education section"><div className="wrap"><p className="sectionLabel">04 / Education</p><h2>Always learning.<br/><em>Always advancing.</em></h2><div className="eduGrid"><article><b>2026 - 2029</b><h3>Doctor of Business Administration</h3><p>Belhaven University</p></article><article><b>2021 - 2022</b><h3>M.S. Industrial Engineering</h3><p>University of Houston · GPA 3.6</p></article><article><b>2018 - 2020</b><h3>MBA, Manufacturing Management</h3><p>BITS Pilani · CGPA 8.75</p></article><article><b>2013 - 2017</b><h3>B.Tech. Mechanical Engineering</h3><p>Punjab Technical University · GPA 3.6</p></article></div></div></section>
+
+      <footer><div className="wrap footerInner"><div><p>Have a challenge worth solving?</p><h2>Let&apos;s build what&apos;s next.</h2><a href="mailto:vatsgr39@gmail.com">vatsgr39@gmail.com <span>↗</span></a></div><div className="footerLinks"><a href="https://www.linkedin.com/in/gautam-vats" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="tel:+12817997121">+1 281 799 7121</a><a href="/Gautam-Kumar-Resume.pdf" target="_blank">Résumé ↗</a></div></div><div className="wrap copyright"><span>© 2026 Gautam Kumar</span><span>Strategic Sourcing · Supply Chain · Manufacturing</span></div></footer>
+    </main>
+  );
 }
