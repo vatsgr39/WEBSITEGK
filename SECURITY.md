@@ -1,0 +1,3 @@
+# Security policy
+
+Report vulnerabilities privately to the project maintainers; do not open public exploit issues. The threat model covers credential theft, cross-supplier disclosure, malicious uploads, prompt injection, CSV formula injection, dependency compromise and model manipulation. Current limitations: the demonstration does not yet persist refresh-token rotation, implement complete endpoint RBAC, or scan uploads. Never expose it publicly with demo credentials. Production deployments must use managed secrets, TLS, private database networking, encrypted object storage, backups, monitoring and reviewed authorization tests.

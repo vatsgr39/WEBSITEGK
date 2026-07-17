@@ -1,0 +1,18 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment: {POSTGRES_DB: source_twin, POSTGRES_USER: source_twin, POSTGRES_PASSWORD: local_demo_only}
+    volumes: [postgres_data:/var/lib/postgresql/data, ./backend/migrations/001_initial.sql:/docker-entrypoint-initdb.d/001_initial.sql:ro]
+    healthcheck: {test: ["CMD-SHELL", "pg_isready -U source_twin"], interval: 5s, timeout: 3s, retries: 10}
+  backend:
+    build: ./backend
+    environment: {DATABASE_URL: postgresql+psycopg://source_twin:local_demo_only@db:5432/source_twin, JWT_SECRET: change-me-outside-development, ENVIRONMENT: development}
+    ports: ["8000:8000"]
+    depends_on: {db: {condition: service_healthy}}
+    healthcheck: {test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health')"], interval: 10s, timeout: 3s, retries: 5}
+  frontend:
+    build: {context: ., dockerfile: Dockerfile.frontend}
+    environment: {NEXT_PUBLIC_API_URL: http://localhost:8000}
+    ports: ["3000:3000"]
+    depends_on: {backend: {condition: service_healthy}}
+volumes: {postgres_data: {}}
